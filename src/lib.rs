@@ -3,9 +3,7 @@
 
 extern crate test;
 
-pub use naive::NaiveStringMatcher;
-pub use core::StringMatcher;
-
-mod core;
-mod naive;
+pub mod core;
+pub mod naive;
+pub mod rabin_karp;
 

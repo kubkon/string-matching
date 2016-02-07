@@ -1,4 +1,4 @@
-pub trait StringMatcher {
+pub trait StringSearch {
     fn _search(&self, text: &str, pattern: &str) -> Vec<usize>;
 
     fn search(&self, text: &str, pattern: &str) -> Vec<usize> {
