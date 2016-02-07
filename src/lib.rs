@@ -1,4 +1,4 @@
-#![crate_name = "pattern_matching"]
+#![crate_name = "string_matching"]
 #![feature(test)]
 
 extern crate test;
