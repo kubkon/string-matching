@@ -23,7 +23,7 @@ impl StringSearch for StringMatcher {
         let pattern_b: Vec<isize> = pattern.as_bytes().iter().map(|&x| x as isize).collect();
         let (p, mut t) = pattern_b.iter()
                                   .zip(text_b.iter())
-                                  .fold((0,0), |(p, t), (&x, &y)| (
+                                  .fold((0, 0), |(p, t), (&x, &y)| (
                                       (p * ALPHABET + x) % self.prime,
                                       (t * ALPHABET + y) % self.prime,
                                   ));
