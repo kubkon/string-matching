@@ -37,8 +37,17 @@ impl StringMatcher {
 impl StringSearch for StringMatcher {
     fn _search(&self, text: &str, pattern: &str) -> Vec<usize> {
         let transitions = self.construct_dfa(pattern);
-        println!("{:?}", transitions);
-        Vec::new()
+        let n = pattern.len();
+        let mut state = 0;
+        let mut indices = Vec::new();
+        for (i, c) in text.chars().enumerate() {
+            state = *transitions.get(&(state, c)).unwrap();
+            if state == n {
+                let index = i as isize - n as isize + 1;
+                indices.push(index as usize);
+            }
+        }
+        indices
     }
 }
 
