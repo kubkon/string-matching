@@ -6,4 +6,5 @@ extern crate test;
 pub mod core;
 pub mod naive;
 pub mod rabin_karp;
+pub mod dfa;
 
