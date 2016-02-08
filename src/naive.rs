@@ -13,7 +13,7 @@ impl StringSearch for StringMatcher {
         let mut indices = Vec::new();
         let m = text.len();
         let n = pattern.len();
-        for i in 0 .. m - n {
+        for i in 0 .. m - n + 1 {
             if &text[i .. n + i] == pattern {
                 indices.push(i);
             }
@@ -25,7 +25,7 @@ impl StringSearch for StringMatcher {
 #[cfg(test)]
 mod tests {
     use ::core::StringSearch;
-    use ::naive::StringMatcher;
+    use super::StringMatcher;
 
     #[test]
     fn invalid_pattern() {
@@ -40,8 +40,10 @@ mod tests {
     #[test]
     fn valid_pattern() {
         let matcher = StringMatcher::new();
-        assert_eq!(vec![3],   matcher.search("abcabaabcabac", "abaa"));
-        assert_eq!(vec![0,6], matcher.search("abcabaabcabac", "abc"));
-        assert_eq!(vec![3,9], matcher.search("abcabaabcabac", "aba"));
+        assert_eq!(vec![3],      matcher.search("abcabaabcabac", "abaa"));
+        assert_eq!(vec![0,6],    matcher.search("abcabaabcabac", "abc"));
+        assert_eq!(vec![3,9],    matcher.search("abcabaabcabac", "aba"));
+        assert_eq!(vec![0,3,10], matcher.search("abcabaacbaabc", "ab"));
+        assert_eq!(vec![0,10],   matcher.search("abcabaacbaabc", "abc"));
     }
 }

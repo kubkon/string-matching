@@ -69,10 +69,10 @@ mod tests {
     #[test]
     fn valid_pattern() {
         let matcher = StringMatcher::new();
-        assert_eq!(vec![3],   matcher.search("abcabaabcabac", "abaa"));
-        assert_eq!(vec![0,6], matcher.search("abcabaabcabac", "abc"));
-        assert_eq!(vec![3,9], matcher.search("abcabaabcabac", "aba"));
+        assert_eq!(vec![3],      matcher.search("abcabaabcabac", "abaa"));
+        assert_eq!(vec![0,6],    matcher.search("abcabaabcabac", "abc"));
+        assert_eq!(vec![3,9],    matcher.search("abcabaabcabac", "aba"));
         assert_eq!(vec![0,3,10], matcher.search("abcabaacbaabc", "ab"));
-        assert_eq!(vec![0,10], matcher.search("abcabaacbaabc", "abc"));
+        assert_eq!(vec![0,10],   matcher.search("abcabaacbaabc", "abc"));
     }
 }
