@@ -54,7 +54,8 @@ impl StringSearch for StringMatcher {
 #[cfg(test)]
 mod tests {
     use ::core::StringSearch;
-    use super::StringMatcher;
+    use super::{StringMatcher, ALPHABET};
+    use std::collections::HashMap;
 
     #[test]
     fn invalid_pattern() {
@@ -74,5 +75,30 @@ mod tests {
         assert_eq!(vec![3,9],    matcher.search("abcabaabcabac", "aba"));
         assert_eq!(vec![0,3,10], matcher.search("abcabaacbaabc", "ab"));
         assert_eq!(vec![0,10],   matcher.search("abcabaacbaabc", "abc"));
+    }
+
+    #[test]
+    fn construct_dfa() {
+        let matcher = StringMatcher::new();
+        let mut map = HashMap::new();
+        map.insert((0, 'a'), 1);
+        map.insert((0, 'b'), 0);
+        map.insert((0, 'c'), 0);
+        map.insert((1, 'a'), 1);
+        map.insert((1, 'b'), 2);
+        map.insert((1, 'c'), 0);
+        map.insert((2, 'a'), 3);
+        map.insert((2, 'b'), 0);
+        map.insert((2, 'c'), 0);
+        map.insert((3, 'a'), 1);
+        map.insert((3, 'b'), 2);
+        map.insert((3, 'c'), 0);
+        let partial_alphabet = &ALPHABET[3 .. ALPHABET.len()];
+        for c in partial_alphabet.chars() {
+            for state in 0 .. 4 {
+                map.insert((state, c), 0);
+            }
+        }
+        assert_eq!(map, matcher.construct_dfa("aba"));
     }
 }
