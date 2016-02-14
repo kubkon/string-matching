@@ -1,4 +1,3 @@
-use std::cmp::max;
 use ::core::StringSearch;
 
 pub struct StringMatcher;
@@ -8,7 +7,7 @@ impl StringMatcher {
         StringMatcher
     }
     
-    fn compute_failure(&self, pattern: &str) -> Vec<usize> {
+    fn compute_shifts(&self, pattern: &str) -> Vec<usize> {
         let n = pattern.len();
         let mut shifts = Vec::with_capacity(n);
         shifts.push(0);
@@ -34,7 +33,32 @@ impl StringMatcher {
 
 impl StringSearch for StringMatcher {
     fn _search(&self, text: &str, pattern: &str) -> Vec<usize> {
-        Vec::new()
+        let mut indices = Vec::new();
+        let shifts = self.compute_shifts(pattern);
+        let t: Vec<char> = text.chars().collect();
+        let p: Vec<char> = pattern.chars().collect();
+        let m = t.len();
+        let n = p.len();
+        let mut q = 0;
+        for i in 0 .. m {
+            loop {
+                if q <= 0 || p[q] == t[i] {
+                    break;
+                }
+                q = shifts[q];
+            }
+
+            if p[q] == t[i] {
+                q = q + 1;
+            }
+
+            if q == n {
+                let index = i as isize - n as isize + 1;
+                indices.push(index as usize);
+                q = shifts[q - 1];
+            }
+        }
+        indices
     }
 }
 
@@ -64,9 +88,9 @@ mod tests {
     }
 
     #[test]
-    fn compute_failure() {
+    fn compute_shifts() {
         let matcher = StringMatcher::new();
-        assert_eq!(vec![0,0,1,2],       matcher.compute_failure("abab"));
-        assert_eq!(vec![0,0,1,2,3,0,1], matcher.compute_failure("ababaca"));
+        assert_eq!(vec![0,0,1,2],       matcher.compute_shifts("abab"));
+        assert_eq!(vec![0,0,1,2,3,0,1], matcher.compute_shifts("ababaca"));
     }
 }
